@@ -2,22 +2,33 @@
 	"name": "mybbbridge",
 	"displayName": "MyBBBridge",
 	"description": "VSCode extension to edit and create MyBB themes and templates.",
-	"version": "0.0.1",
+	"version": "0.0.1-alpha",
+	"publisher": "LeMinaw",
 	"engines": {
 		"vscode": "^1.41.0"
 	},
 	"categories": [
 		"Other"
 	],
+	"preview": true,
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"workspaceContains:.vscode/mbbb.json",
+		"onCommand:extension.createConfig"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
+				"command": "extension.createConfig",
+				"title": "MyBBBridge: Create config file"
+			},
+			{
+				"command": "extension.loadTemplateSet",
+				"title": "MyBBBridge: Load MyBB template set from database"
+			},
+			{
+				"command": "extension.loadStyle",
+				"title": "MyBBBridge: Load MyBB style from database"
 			}
 		]
 	},
@@ -38,5 +49,9 @@
 		"typescript": "^3.6.4",
 		"tslint": "^5.20.0",
 		"vscode-test": "^1.2.2"
+	},
+	"dependencies": {
+		"@types/mysql": "^2.15.8",
+		"mysql": "^2.17.1"
 	}
 }

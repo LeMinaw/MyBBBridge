@@ -1,65 +1,55 @@
-# mybbbridge README
+# MyBBBridge
 
-This is the README for your extension "mybbbridge". After writing up a brief description, we recommend including the following sections.
+MyBBBridge is an extension aimed at making MyBB template and theme dev more convenant.
+
+**Warning: this software is pre-alpha. Make backups and use it at your own risk.**
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+* Downloading theme (`.css`) and templates (`.html`) files from database to disk.
 
-For example if there is an image subfolder under your extension project workspace:
+## How to use
 
-\!\[feature X\]\(images/feature-x.png\)
+### Configuration
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+To operate, MyBBBridge *needs* a `.vscode/mbbb.json` file at your workspace root.
 
-## Requirements
+You can create one using the command `MyBBBridge: Create config file`.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+The default config file looks like this and should be quite self explanatory:
 
-## Extension Settings
+```json
+{
+    "database": {
+        "host": "localhost",
+        "port": 3306,
+        "database": "mybb",
+        "prefix": "mybb_",
+        "user": "root",
+        "password": ""
+    },
+    "mybb_version": 1860
+}
+```
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+* `mybb_version`: MyBB version to be used in newly created theme files. Existing files
+  will keep their version metadata.
 
-For example:
+### Commands
 
-This extension contributes the following settings:
+* `MyBBBridge: Create config file`: Create a new config file, allowing you to start
+  using MyBBBridge.
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `MyBBBridge: Load MyBB template set from database`: Download and save all templates
+  files of a given template set to the `./template_sets/<template_set_name>/` folder.
+  *Overrides existing files without confirmation!*
 
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
+* `MyBBBridge: Load MyBB style from database`: Download and save all stylesheet files
+  of a given style to the `./styles/<style_name>/` folder.
+  *Overrides existing files without confirmation!*
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1-alpha
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Alpha release providing basic download features.
