@@ -4,6 +4,11 @@ import { promises as fs, PathLike } from 'fs';
 import path = require('path');
 
 
+function timestamp(): number {
+    return Math.floor(Date.now() / 1000);
+}
+
+
 function getWorkspacePath() {
     if (vscode.workspace.workspaceFolders) {
         return vscode.workspace.workspaceFolders[0].uri.fsPath;
@@ -52,4 +57,4 @@ function getConnexion(dbConfig: any) {
 }
 
 
-export { getWorkspacePath, makePath, getConfig, getConnexion };
+export { getWorkspacePath, makePath, getConfig, getConnexion, timestamp };

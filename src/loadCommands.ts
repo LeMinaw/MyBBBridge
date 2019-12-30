@@ -10,7 +10,7 @@ async function loadTemplateSetCommand() {
     const config = await getConfig();
     const con = getConnexion(config.database);
 
-    const templateSetName = await vscode.window.showInputBox({ placeHolder: 'Template set name' });
+    const templateSetName = await vscode.window.showInputBox({ placeHolder: 'Template set name (often ending with "Templates")' });
     if (templateSetName === undefined) {
         return;
     }
@@ -43,7 +43,7 @@ async function loadStyleCommand() {
 
     const stylesheets = await style.getElements();
     stylesheets.forEach(async (stylesheet: any) => {
-        let stylesheetPath = path.join(stylePath, stylesheet.name + '.css');
+        let stylesheetPath = path.join(stylePath, stylesheet.name);
         await fs.writeFile(stylesheetPath, stylesheet.stylesheet);
     });
     vscode.window.showInformationMessage(`${stylesheets.length} stylesheets were loaded.`);

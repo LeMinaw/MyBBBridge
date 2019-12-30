@@ -6,7 +6,9 @@ MyBBBridge is an extension aimed at making MyBB template and theme dev more conv
 
 ## Features
 
-* Downloading theme (`.css`) and templates (`.html`) files from database to disk.
+* Download themes (`.css`) and templates (`.html`) files from database to disk.
+
+* Save themes and templates to database when saved on disk.
 
 ## How to use
 
@@ -16,7 +18,7 @@ To operate, MyBBBridge *needs* a `.vscode/mbbb.json` file at your workspace root
 
 You can create one using the command `MyBBBridge: Create config file`.
 
-The default config file looks like this and should be quite self explanatory:
+The default config file looks like this:
 
 ```json
 {
@@ -28,12 +30,19 @@ The default config file looks like this and should be quite self explanatory:
         "user": "root",
         "password": ""
     },
-    "mybb_version": 1860
+    "mybbVersion": 1860,
+    "autoUpload": true
 }
 ```
 
-* `mybb_version`: MyBB version to be used in newly created theme files. Existing files
+* `database`: This one should be quite self explanatory!
+
+* `mybbVersion`: MyBB version to be used in newly created theme files. Existing files
   will keep their version metadata.
+
+* `autoUpload`: If true, MyBBBridge will try to save theme and stylesheets to database
+  each time a corresponding file is saved in VSCode.
+  *Overrides existing database entries without confirmation!*
 
 ### Commands
 
@@ -53,3 +62,7 @@ The default config file looks like this and should be quite self explanatory:
 ### 0.0.1-alpha
 
 Alpha release providing basic download features.
+
+### 0.0.2-alpha
+
+Alpha release with save features.

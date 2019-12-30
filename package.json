@@ -2,7 +2,7 @@
 	"name": "mybbbridge",
 	"displayName": "MyBBBridge",
 	"description": "VSCode extension to edit and create MyBB themes and templates.",
-	"version": "0.0.1-alpha",
+	"version": "0.0.2-alpha",
 	"publisher": "LeMinaw",
 	"engines": {
 		"vscode": "^1.41.0"

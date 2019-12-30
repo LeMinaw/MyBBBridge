@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as mysql from 'mysql';
 
+import { timestamp } from './utils';
 
 abstract class MyBBSet {
     name: string;
@@ -13,11 +14,11 @@ abstract class MyBBSet {
         this.prefix = prefix;
     }
 
-    public getTable(name:string) {
+    public getTable(name:string): string {
         return this.prefix + name;
     }
 
-    public query(req: string, params: any[], callback: any=()=>{}) {
+    public query(req: string, params: any[], callback: any=()=>{}): any {
         return new Promise((resolve, reject) => {
             this.con.query(req, params, (err: any, result: any) => {
                 if (err) {
@@ -35,14 +36,10 @@ abstract class MyBBSet {
 class MyBBTemplateSet extends MyBBSet {
     sid: number|undefined;
 
-    private getSetName() {
-        return this.name + ' Templates';
-    }
-
-    private async getSid() {
-        const res: any = await this.query(
+    private async getSid(): Promise<number|undefined> {
+        const res = await this.query(
             'SELECT sid FROM ?? WHERE title=?',
-            [this.getTable('templatesets'), this.getSetName()],
+            [this.getTable('templatesets'), this.name],
             (err: any, result: any) => {
                 if (!result.length) {
                     vscode.window.showErrorMessage(`Can't find template ${this.name}!`);
@@ -53,9 +50,9 @@ class MyBBTemplateSet extends MyBBSet {
         return this.sid;
     }
 
-    public async getElements() {
+    public async getElements(): Promise<any> {
         await this.getSid();
-        const templates: any = await this.query(
+        const templates = await this.query(
             'SELECT title, template FROM ?? WHERE sid=? ORDER BY sid DESC, title ASC',
             [this.getTable('templates'), this.sid],
             (err: any, result: any) => {
@@ -66,6 +63,37 @@ class MyBBTemplateSet extends MyBBSet {
         );
         return templates;
     }
+
+    public async saveElement(name: string, content: string, version: number) {
+        await this.getSid();
+
+        const res = await this.query(
+            'SELECT tid FROM ?? WHERE title=? AND sid=?',
+            [this.getTable('templates'), name, this.sid],
+        );
+
+        if (!res.length) { // Insert
+            this.query(
+                'INSERT INTO ?? SET title=?, template=?, sid=?, version=?',
+                [this.getTable('templates'), name, content, this.sid, version],
+                (err: any, result: any) => {
+                    if (!err) {
+                        vscode.window.showInformationMessage(`Uploaded new template ${name} in DB.`);
+                    }
+                }
+            );
+        } else { // Update
+            this.query(
+                'UPDATE ?? SET template=? WHERE title=? AND sid=?',
+                [this.getTable('templates'), content, name, this.sid],
+                (err: any, result: any) => {
+                    if (!err) {
+                        vscode.window.showInformationMessage(`Updated template ${name} in DB.`);
+                    }
+                }
+            );
+        }
+    }
 }
 
 
@@ -73,7 +101,7 @@ class MyBBStyle extends MyBBSet {
     tid: number|undefined;
 
     private async getTid() {
-        const res: any = await this.query(
+        const res = await this.query(
             'SELECT tid FROM ?? WHERE name=?',
             [this.getTable('themes'), this.name],
             (err: any, result: any) => {
@@ -86,9 +114,18 @@ class MyBBStyle extends MyBBSet {
         return this.tid;
     }
 
+    private async getSid(name: string) {
+        await this.getTid();
+        const res = await this.query(
+            'SELECT sid FROM ?? WHERE name=? AND tid=?',
+            [this.getTable('themestylesheets'), name, this.tid]
+        );
+        return res[0].sid;
+    }
+
     public async getElements() {
         await this.getTid();
-        const stylesheets: any = await this.query(
+        const stylesheets = await this.query(
             'SELECT name, stylesheet FROM ?? WHERE tid=? ORDER BY tid DESC, name ASC',
             [this.getTable('themestylesheets'), this.tid],
             (err: any, result: any) => {
@@ -98,6 +135,38 @@ class MyBBStyle extends MyBBSet {
             }
         );
         return stylesheets;
+    }
+
+    public async saveElement(name: string, content: string, version: number) {
+        await this.getTid();
+
+        const res = await this.query(
+            'SELECT sid FROM ?? WHERE name=? AND tid=?',
+            [this.getTable('themestylesheets'), name, this.tid],
+        );
+
+        if (!res.length) { // Insert
+            this.query(
+                'INSERT INTO ?? SET name=?, stylesheet=?, tid=?, lastmodified=?',
+                [this.getTable('themestylesheets'), name, content, this.tid, timestamp()],
+                (err: any, result: any) => {
+                    if (!err) {
+                        vscode.window.showInformationMessage(`Uploaded new stylesheet ${name} in DB.`);
+                    }
+                }
+            );
+        } else { // Update
+            const cachefile = 'css.php?stylesheet=' + await this.getSid(name);
+            this.query(
+                'UPDATE ?? SET stylesheet=?, lastmodified=?, cachefile=? WHERE name=? AND tid=?',
+                [this.getTable('themestylesheets'), content, timestamp(), cachefile, name, this.tid],
+                (err: any, result: any) => {
+                    if (!err) {
+                        vscode.window.showInformationMessage(`Updated stylesheet ${name} in DB.`);
+                    }
+                }
+            );
+        }
     }
 }
 

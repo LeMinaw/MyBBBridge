@@ -34,7 +34,8 @@ async function createConfigCommand() {
                     "user": "root",
                     "password": ""
                 },
-                "mybb_version": 1860
+                "mybbVersion": 1860,
+                "autoUpload": true
             }, null, 4);
 
             await fs.writeFile(configFilePath, defaultConf);
