@@ -177,7 +177,6 @@ class MyBBStyle extends MyBBSet {
         if (config.mybbUrl) {
             const scriptUrl = urlJoin([config.mybbUrl, 'cachecss.php']);
 
-            console.debug(scriptUrl);
             request
                 .get({
                     uri: scriptUrl,
