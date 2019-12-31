@@ -35,7 +35,7 @@ abstract class MyBBSet {
 }
 
 
-class MyBBTemplateSet extends MyBBSet {
+export class MyBBTemplateSet extends MyBBSet {
     sid: number|undefined;
 
     private async getSid(): Promise<number|undefined> {
@@ -99,7 +99,7 @@ class MyBBTemplateSet extends MyBBSet {
 }
 
 
-class MyBBStyle extends MyBBSet {
+export class MyBBStyle extends MyBBSet {
     tid: number|undefined;
 
     private async getTid() {
@@ -192,6 +192,3 @@ class MyBBStyle extends MyBBSet {
         }
     }
 }
-
-
-export { MyBBTemplateSet, MyBBStyle };

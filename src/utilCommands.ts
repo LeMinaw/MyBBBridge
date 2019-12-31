@@ -5,7 +5,7 @@ import path = require('path');
 import { getWorkspacePath } from './utils';
 
 
-async function createConfigCommand() {
+export async function createConfigCommand() {
     // Get current workspace path
     const workspacePath = getWorkspacePath();
     
@@ -47,6 +47,3 @@ async function createConfigCommand() {
     }
     vscode.window.showErrorMessage(`Config file ${configFilePath} already exists!`);
 }
-
-
-export { createConfigCommand };

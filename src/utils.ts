@@ -4,12 +4,12 @@ import { promises as fs, PathLike } from 'fs';
 import path = require('path');
 
 
-function timestamp(): number {
+export function timestamp(): number {
     return Math.floor(Date.now() / 1000);
 }
 
 
-function getWorkspacePath() {
+export function getWorkspacePath(): string {
     if (vscode.workspace.workspaceFolders) {
         return vscode.workspace.workspaceFolders[0].uri.fsPath;
     } else {
@@ -19,7 +19,7 @@ function getWorkspacePath() {
 }
 
 
-async function makePath(path: PathLike) {
+export async function makePath(path: PathLike): Promise<void> {
     try {
         await fs.mkdir(path, { 'recursive': true });
     } catch (err) {
@@ -40,7 +40,7 @@ export function urlJoin(urlParts: string[]): string {
 }
 
 
-async function getConfig() {
+export async function getConfig(): Promise<any> {
     const configFilePath = path.join(getWorkspacePath(), '.vscode', 'mbbb.json');
     let configFile: Buffer;
     try {
@@ -56,7 +56,7 @@ async function getConfig() {
 }
 
 
-function getConnexion(dbConfig: any) {
+export function getConnexion(dbConfig: any): mysql.Connection {
     return mysql.createConnection({
         host: dbConfig.host,
         port: dbConfig.port,
@@ -65,6 +65,3 @@ function getConnexion(dbConfig: any) {
         password: dbConfig.password
     });
 }
-
-
-export { getWorkspacePath, makePath, getConfig, getConnexion, timestamp };

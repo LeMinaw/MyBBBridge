@@ -6,7 +6,7 @@ import { MyBBTemplateSet, MyBBStyle } from "./MyBBThemes";
 import { getWorkspacePath, makePath, getConfig, getConnexion } from './utils';
 
 
-async function loadTemplateSetCommand() {
+export async function loadTemplateSetCommand() {
     const config = await getConfig();
     const con = getConnexion(config.database);
 
@@ -28,7 +28,7 @@ async function loadTemplateSetCommand() {
 }
 
 
-async function loadStyleCommand() {
+export async function loadStyleCommand() {
     const config = await getConfig();
     const con = getConnexion(config.database);
 
@@ -48,6 +48,3 @@ async function loadStyleCommand() {
     });
     vscode.window.showInformationMessage(`${stylesheets.length} stylesheets were loaded.`);
 }
-
-
-export { loadTemplateSetCommand, loadStyleCommand };

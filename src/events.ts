@@ -4,7 +4,7 @@ import path = require('path');
 import { MyBBTemplateSet, MyBBStyle } from "./MyBBThemes";
 import { getWorkspacePath, getConfig, getConnexion } from './utils';
 
-async function onSaveEvent(document: vscode.TextDocument) {
+export async function onSaveEvent(document: vscode.TextDocument) {
     const config = await getConfig();
 
     if (config.autoUpload) {
@@ -34,6 +34,3 @@ async function onSaveEvent(document: vscode.TextDocument) {
     }
     
 }
-
-
-export { onSaveEvent };
