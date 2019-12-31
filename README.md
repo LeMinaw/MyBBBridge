@@ -10,6 +10,8 @@ MyBBBridge is an extension aimed at making MyBB template and theme dev more conv
 
 * Save themes and templates to database when saved on disk.
 
+* Automatically refresh templates cache files on save.
+
 ## How to use
 
 ### Configuration
@@ -31,6 +33,7 @@ The default config file looks like this:
         "password": ""
     },
     "mybbVersion": 1860,
+    "mybbUrl": "http://localhost",
     "autoUpload": true
 }
 ```
@@ -40,9 +43,19 @@ The default config file looks like this:
 * `mybbVersion`: MyBB version to be used in newly created theme files. Existing files
   will keep their version metadata.
 
+* `mybbUrl`: URL of your MyBB board. Set to `null` or `''` to disable cache refresh
+  requests.
+
 * `autoUpload`: If true, MyBBBridge will try to save theme and stylesheets to database
   each time a corresponding file is saved in VSCode.
   *Overrides existing database entries without confirmation!*
+
+### Cache refresh
+
+To be able to ask MyBB for template cache refresh, MyBBBridge requires you to upload
+the tiny `cachecss.php` php file of this repository to your web server, at the root of
+your MyBB directory. If you don't plan to use cache refresh, you can skip this step and
+set `mybbUrl` to `null` in your `mbbb.json` config file.
 
 ### Commands
 
@@ -66,3 +79,7 @@ Alpha release providing basic download features.
 ### 0.0.2-alpha
 
 Alpha release with save features.
+
+### 0.0.3-alpha
+
+Alpha release allowing to refresh MyBB stylesheet cache files.

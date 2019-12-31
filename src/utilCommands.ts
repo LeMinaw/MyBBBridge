@@ -35,6 +35,7 @@ async function createConfigCommand() {
                     "password": ""
                 },
                 "mybbVersion": 1860,
+                "mybbUrl": "http://localhost",
                 "autoUpload": true
             }, null, 4);
 

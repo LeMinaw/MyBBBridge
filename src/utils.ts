@@ -30,6 +30,16 @@ async function makePath(path: PathLike) {
 }
 
 
+export function urlJoin(urlParts: string[]): string {
+    return urlParts
+        .map(part => {
+            const part2 = part.endsWith('/') ? part.substring(0, part.length - 1) : part;
+            return part2.startsWith('/') ? part2.substr(1) : part2;
+        })
+        .join('/');
+}
+
+
 async function getConfig() {
     const configFilePath = path.join(getWorkspacePath(), '.vscode', 'mbbb.json');
     let configFile: Buffer;
