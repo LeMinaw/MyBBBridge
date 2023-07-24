@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as mysql from 'mysql';
+import * as mysql from 'mysql2';
 import * as request from 'request-promise-native';
 
 import { timestamp, urlJoin, getConfig } from './utils';

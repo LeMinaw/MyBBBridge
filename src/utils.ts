@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as mysql from 'mysql';
+import * as mysql from 'mysql2';
 import { promises as fs, PathLike } from 'fs';
 import path = require('path');
 
